@@ -33,6 +33,28 @@ class Connection extends Program
         return $accountResponse;
     }
 
+    public function getTokenAccountBalance(string $pubKey): array
+    {
+        $accountResponse = $this->client->call('getTokenAccountBalance', [$pubKey, ["encoding" => "base64", "commitment" => "confirmed"]])['value'];
+
+        if (! $accountResponse) {
+            throw new AccountNotFoundException("API Error: Account {$pubKey} not found.");
+        }
+
+        return $accountResponse;
+    }
+
+    public function getTokenSupply(string $pubKey): array
+    {
+        $accountResponse = $this->client->call('getTokenSupply', [$pubKey, ["encoding" => "base64", "commitment" => "confirmed"]])['value'];
+
+        if (! $accountResponse) {
+            throw new AccountNotFoundException("API Error: Token account {$pubKey} not found.");
+        }
+
+        return $accountResponse;
+    }
+
     /**
      * @param string $pubKey
      * @return float
